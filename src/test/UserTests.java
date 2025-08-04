@@ -1,14 +1,17 @@
 package test;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import pages.SignupPage;
 import utils.DriverFactory;
+import utils.TestData;
 import utils.TestDataGenerator;
 
 public class UserTests {
@@ -17,8 +20,10 @@ public class UserTests {
 WebDriver driver;
 SignupPage signupPage;
 String firstName;
-String username;
-String password = "Test@1234";
+String lastName;
+String email ;
+String password ;
+;
 
 	
 	
@@ -32,10 +37,15 @@ String password = "Test@1234";
 	   
 	   @Test(priority = 1)
 	    public void testSignup() throws InterruptedException {
-	        firstName = TestDataGenerator.getRandomFirstName();
-	        String lastName = TestDataGenerator.getRandomLastName();
-	        username = TestDataGenerator.getRandomUsername(firstName, lastName);
-	        String email = TestDataGenerator.getEmail(firstName, lastName);
+		   
+		   JavascriptExecutor js = (JavascriptExecutor) driver;
+
+			js.executeScript("window.scrollTo(0,150)");
+	        firstName = TestData.getRandomFirstName();
+	        lastName = TestData.getRandomLastName();
+	
+	         email = TestData.getEmail(firstName, lastName);
+	         password = TestData.getRandomPass();
 
 	        signupPage.Fillform(firstName, lastName, email, password);
 	      
@@ -43,24 +53,32 @@ String password = "Test@1234";
 	    }
 	   
 	  @Test(priority = 2)
-	   public void Login() throws InterruptedException
+	   public void LoginPage() throws InterruptedException
 	  
 	   
 	   {
-		   Thread.sleep(3000);
-		   
-		   driver.findElement(By.xpath("//*[@id=\"shopify-section-sections--23554635530550__header\"]/section/header/div/div/div[2]/div[3]/div/a[2]")) .click();
-		   
 		   Thread.sleep(2000);
-		   WebElement logout= driver.findElement(By.cssSelector(".card__linklist-item.link"));
-		   logout.click();
-		   Thread.sleep(2000);
-		   driver.findElement(By.className("Vtl-Button__Text")).click();
+	        driver.get("https://smartbuy-me.com/ar/account/login");
+			 
+			   JavascriptExecutor js = (JavascriptExecutor) driver;
+
+				js.executeScript("window.scrollTo(0,200)");
+				  Thread.sleep(2000);
+
+		   driver.findElement(By.id("customer[email]")).sendKeys(email);
+		   driver.findElement(By.id("customer[password]")).sendKeys(password);
+			  Thread.sleep(2000);
+
+			  driver.findElement(By.cssSelector(".form__submit.button.button--primary.button--full")).click();
+		  
 		
 
 	   }
 		   
-		   
+	  @AfterTest
+	    public void teardown() {
+	        DriverFactory.quitDriver();
+	    }  
 		   
 	   }
 

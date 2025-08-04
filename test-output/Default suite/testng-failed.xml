@@ -5,8 +5,9 @@
     <classes>
       <class name="test.UserTests">
         <methods>
+          <include name="testSignup"/>
+          <include name="teardown"/>
           <include name="setup"/>
-          <include name="Login"/>
         </methods>
       </class> <!-- test.UserTests -->
     </classes>

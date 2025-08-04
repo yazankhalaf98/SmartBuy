@@ -25,5 +25,12 @@ public class TestData {
 	    public static String getRandomUsername(String first, String last) {
 	        return first + last + rand.nextInt(7000);
 	    }
+	    public static String getRandomPass() {
+	        String[] password = {"alaa@45", "saif1998", "abduallah09", "hamzeh66", "marwan666", "abedalrahman6544", "omar123","yazan98"};
+	        return password[rand.nextInt(password.length)];
+	    
+	    }
+
+		
 	
 }
